@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="ISO-8859-1">
+    <title>profile</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="row">
+        <div style="margin: 10px;" class="col" align="right">
+            <h2 th:text="'HI '+${ausername}"></h2>
+        </div>
+        <div style="margin: 10px;" class="col" align="right">
+            <a th:href="@{/logout}" class="btn btn-primary mb-3">logout</a>
+        </div>
+    </div>
+
+    <div class="container my-2">
+        <h1>Employees List</h1>
+
+        <a th:href="@{/addprofile}" class="btn btn-primary btn-sm mb-3"> Add Employee </a>
+
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+                <tr>
+                    <th>Employee First Name</th>
+                    <th>Employee Last Name</th>
+                    <th>Employee email</th>
+                    <th>Employee phone number</th>
+                    <th>Sbws compliant</th>
+                    <th> role </th>
+                    <th>address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="profile : ${profiles}">
+                    <td th:text="${profile.firstName}"></td>
+                    <td th:text="${profile.lastName}"></td>
+                    <td th:text="${profile.email}"></td>
+                    <td th:text="${profile.phoneNumber}"></td>
+                    <td th:text="${profile.isCompliant}?'YES':'NO'"></td>
+                    <td th:text="${profile.role}"></td>
+                    <td th:utext="${profile.address.doornumber}+','+
+                    ${profile.address.addressline1}+'<br>'+
+                    ${profile.address.addressline2}+
+                    ${profile.address.city}+','+
+                    ${profile.address.state}+','+
+                    ${profile.address.pincode}"></td>
+                    <td> <a th:href="@{/updateProfileForm/{id}(id=${profile.empId})}" class="btn btn-primary">Update</a>
+                        <a th:href="@{/deleteProfile/{id}(id=${profile.empId})}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div th:if="${#lists.isEmpty(profiles)}" class="alert alert-danger" role="alert">
+            <p>profile not found</p>
+        </div>
+    </div>
+</body>
+
+</html>
